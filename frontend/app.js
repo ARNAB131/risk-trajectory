@@ -1,15 +1,11 @@
-// Works in Codespaces + local
-const BASE_HTTP = (location.hostname === "localhost")
-  ? "http://localhost:8000"
-  : `https://${location.hostname.replace("8080", "8000")}`;
+// Auto-detect Codespaces ports (8080 frontend -> 8000 API)
+const host = location.host;                 // e.g. xxx-8080.app.github.dev
+const apiHost = host.replace("-8080.", "-8000.");
+const httpProto = location.protocol;        // https:
+const wsProto = httpProto === "https:" ? "wss:" : "ws:";
 
-const BASE_WS = (location.hostname === "localhost")
-  ? "ws://localhost:8000/ws"
-  : `wss://${location.hostname.replace("8080", "8000")}/ws`;
-
-const API_HTTP = BASE_HTTP;
-const API_WS   = BASE_WS;
-
+const API_HTTP = `${httpProto}//${apiHost}`;
+const API_WS   = `${wsProto}//${apiHost}/ws`;
 
 let ws = null;
 let currentPatient = null;
