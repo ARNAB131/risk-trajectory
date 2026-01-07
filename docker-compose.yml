@@ -1,0 +1,36 @@
+services:
+  api:
+    build: ./backend-python
+    environment:
+      - DATABASE_URL=sqlite:////data/risk_trajectory.db
+      - NOTIFY_URL=http://notify:4567/notify
+      - WS_ORIGIN=*
+    volumes:
+      - rt_data:/data
+    ports:
+      - "8000:8000"
+    depends_on:
+      - notify
+
+  notify:
+    build: ./backend-ruby
+    environment:
+      - SMTP_HOST=${SMTP_HOST}
+      - SMTP_PORT=${SMTP_PORT}
+      - SMTP_USER=${SMTP_USER}
+      - SMTP_PASS=${SMTP_PASS}
+      - SMTP_FROM=${SMTP_FROM}
+    ports:
+      - "4567:4567"
+
+  web:
+    image: nginx:alpine
+    volumes:
+      - ./frontend:/usr/share/nginx/html:ro
+    ports:
+      - "8080:80"
+    depends_on:
+      - api
+
+volumes:
+  rt_data:
