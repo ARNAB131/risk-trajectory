@@ -1,5 +1,15 @@
-const API_HTTP = "http://localhost:8000";
-const API_WS   = "ws://localhost:8000/ws";
+// Works in Codespaces + local
+const BASE_HTTP = (location.hostname === "localhost")
+  ? "http://localhost:8000"
+  : `https://${location.hostname.replace("8080", "8000")}`;
+
+const BASE_WS = (location.hostname === "localhost")
+  ? "ws://localhost:8000/ws"
+  : `wss://${location.hostname.replace("8080", "8000")}/ws`;
+
+const API_HTTP = BASE_HTTP;
+const API_WS   = BASE_WS;
+
 
 let ws = null;
 let currentPatient = null;
