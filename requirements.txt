@@ -1,0 +1,5 @@
+streamlit==1.37.1
+pandas==2.2.2
+numpy==2.0.1
+streamlit-autorefresh==1.0.1
+sqlalchemy==2.0.34
